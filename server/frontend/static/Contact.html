@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us - Best Cars</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            list-style-type: none;
+            margin: 0;
+            padding: 10px;
+            background-color: #343a40;
+            display: flex;
+            justify-content: left;
+        }
+
+        .navbar li {
+            margin-right: 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar a.active {
+            text-decoration: underline;
+        }
+
+        .header-image {
+            width: 90%;
+            max-width: 800px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin: 20px auto;
+            display: block;
+        }
+
+        .contact-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .contact-info {
+            flex: 1 1 300px;
+            max-width: 350px;
+            padding: 10px;
+        }
+
+        .contact-info h1 {
+            color: #2c3e50;
+            font-size: 24px;
+        }
+
+        .contact-info p {
+            font-size: 14px;
+            color: #555;
+            margin: 6px 0;
+        }
+
+        .contact-image {
+            flex: 1 1 300px;
+            max-width: 350px;
+            padding: 10px;
+        }
+
+        .contact-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul class="navbar">
+            <li><a href="/about/">About Us</a></li>
+            <li><a href="/contact/" class="active">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Smaller and centered banner -->
+    <img src="/static/cars.jpeg" alt="Cars Banner" class="header-image">
+
+    <div class="contact-section">
+        <div class="contact-info">
+            <h1>Contact Us</h1>
+            <p>Email: info@bestcars.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Address: 123 Auto Lane, Detroit, MI, USA</p>
+            <p>Customer Service Hours: Mon - Fri, 9AM - 6PM EST</p>
+        </div>
+        <div class="contact-image">
+            <img src="/static/contactus.png" alt="Contact Us">
+        </div>
+    </div>
+</body>
+</html>
