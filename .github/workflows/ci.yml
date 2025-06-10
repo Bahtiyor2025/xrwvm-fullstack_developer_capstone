@@ -1,0 +1,24 @@
+name: Django CI
+
+on: [push, pull_request]  # Triggers when code is pushed or a PR is created
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Defines the environment
+
+    steps:
+    - uses: actions/checkout@v2  # Checks out the repository
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+    - name: Run migrations
+      run: |
+        python manage.py makemigrations
+        python manage.py migrate
+    - name: Run tests
+      run: |
+        pytest
