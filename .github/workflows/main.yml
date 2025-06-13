@@ -29,6 +29,10 @@ jobs:
           find . -name "*.py" -exec flake8 {} +
           echo "Linted all the Python files successfully"
 
+      - name: Install dependencies
+        run: |
+          pip install -r server/requirements.txt  # Correct path
+
   lint_js:
     name: Lint JavaScript Files
     runs-on: ubuntu-latest
