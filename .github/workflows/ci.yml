@@ -29,7 +29,3 @@ jobs:
       run: |
         cd server
         pytest .
-
-    - name: Install dependencies
-      run: |
-        pip install -r server/requirements.txt  # Correct path
