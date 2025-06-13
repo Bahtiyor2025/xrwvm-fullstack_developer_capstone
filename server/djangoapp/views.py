@@ -13,6 +13,7 @@ from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
 import logging
 import json
+import requests
 from django.views.decorators.csrf import csrf_exempt
 from .models import CarMake, CarModel
 from .populate import initiate
@@ -98,18 +99,24 @@ def get_dealerships(request, state="All"):
     dealerships = get_request(endpoint)
     return JsonResponse({"status":200,"dealers":dealerships})
 
+
 def get_dealer_reviews(request, dealer_id):
-    # if dealer id has been provided
-    if(dealer_id):
-        endpoint = "/fetchReviews/dealer/"+str(dealer_id)
-        reviews = get_request(endpoint)
-        for review_detail in reviews:
-            response = analyze_review_sentiments(review_detail['review'])
-            print(response)
-            review_detail['sentiment'] = response['sentiment']
-        return JsonResponse({"status":200,"reviews":reviews})
-    else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+    url = "https://sentianalyzer.1wjfrraqclrq.us-south.codeengine.appdomain.cloud/analyze/"
+    
+    try:
+        response = requests.get(url, params={"dealer_id": dealer_id})
+        if response.status_code == 200:
+            data = response.json()
+            if data and "sentiment" in data:
+                return data["sentiment"]
+            else:
+                return "Sentiment analysis unavailable"
+        else:
+            return f"Error: {response.status_code}"
+    except requests.exceptions.RequestException as e:
+        print(f"Network exception occurred: {e}")
+        return "Sentiment analysis service unreachable"
+
 
 def get_dealer_details(request, dealer_id):
     if(dealer_id):
