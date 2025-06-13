@@ -16,6 +16,7 @@ jobs:
     
     - name: Install dependencies
       run: |
+        cd server
         pip install -r requirements.txt
     
     - name: Run migrations
