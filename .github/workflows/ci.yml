@@ -15,9 +15,10 @@ jobs:
     - name: Install dependencies
       run: pip install -r server/requirements.txt
     - name: Run migrations
+      working-directory: ./server
       run: |
         python manage.py makemigrations
         python manage.py migrate
     - name: Run tests
-      run: |
-        pytest
+      working-directory: ./server
+      run: python manage.py test
