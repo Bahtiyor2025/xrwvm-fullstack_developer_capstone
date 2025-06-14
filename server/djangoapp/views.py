@@ -1,18 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
-from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
-from datetime import datetime
 import logging
 import json
 import requests
 
 from .models import CarMake, CarModel
 from .populate import initiate
-from .restapis import get_request, analyze_review_sentiments, post_review
+from .restapis import get_request, post_review
 
 logger = logging.getLogger(__name__)
 
@@ -64,8 +60,7 @@ def registration(request):
         )
         login(request, user)
         return JsonResponse({"userName": username, "status": "Authenticated"})
-    else:
-        return JsonResponse({"userName": username, "error": "Already Registered"})
+    return JsonResponse({"userName": username, "error": "Already Registered"})
 
 
 def get_cars(request):
@@ -126,5 +121,8 @@ def add_review(request):
             return JsonResponse({"status": 200})
         except Exception as e:
             logger.error(f"Error in posting review: {e}")
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+            return JsonResponse({
+                "status": 401,
+                "message": "Error in posting review"
+            })
     return JsonResponse({"status": 403, "message": "Unauthorized"})
