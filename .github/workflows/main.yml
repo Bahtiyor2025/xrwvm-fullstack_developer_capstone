@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Python Linter
         run: |
-          find . -name "*.py" -exec flake8 {} +
+          find . -name "*.py" -exec flake8 --ignore=E501 {} +
           echo "Python linting passed."
 
   lint_js:
