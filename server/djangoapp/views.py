@@ -59,8 +59,14 @@ def registration(request):
             email=email
         )
         login(request, user)
-        return JsonResponse({"userName": username, "status": "Authenticated"})
-    return JsonResponse({"userName": username, "error": "Already Registered"})
+        return JsonResponse({
+            "userName": username,
+            "status": "Authenticated"
+        })
+    return JsonResponse({
+        "userName": username,
+        "error": "Already Registered"
+    })
 
 
 def get_cars(request):
@@ -88,7 +94,8 @@ def get_dealerships(request, state="All"):
 
 def get_dealer_reviews(request, dealer_id):
     url = (
-        "https://sentianalyzer.1wjfrraqclrq.us-south.codeengine.appdomain.cloud/analyze/"
+        "https://sentianalyzer.1wjfrraqclrq.us-south.codeengine.appdomain.cloud/"
+        "analyze/"
     )
 
     try:
@@ -101,7 +108,9 @@ def get_dealer_reviews(request, dealer_id):
         return JsonResponse({"message": f"Error: {response.status_code}"})
     except requests.exceptions.RequestException as e:
         logger.error(f"Network exception occurred: {e}")
-        return JsonResponse({"message": "Sentiment analysis service unreachable"})
+        return JsonResponse({
+            "message": "Sentiment analysis service unreachable"
+        })
 
 
 def get_dealer_details(request, dealer_id):
