@@ -109,7 +109,9 @@ def get_dealer_reviews(request, dealer_id):
     except requests.exceptions.RequestException as e:
         logger.error(f"Network exception occurred: {e}")
         return JsonResponse({
-            "message": "Sentiment analysis service unreachable"
+            "message": (
+                "Sentiment analysis service unreachable"
+            )
         })
 
 
