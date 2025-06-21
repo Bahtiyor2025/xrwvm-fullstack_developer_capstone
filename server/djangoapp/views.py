@@ -1,14 +1,19 @@
-from django.http import JsonResponse
+# Uncomment the required imports before adding the code
+
+from django.shortcuts import render
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import logout, login, authenticate
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth import logout
+from django.contrib import messages
+from datetime import datetime
+
+from django.http import JsonResponse
+from django.contrib.auth import login, authenticate
 import logging
 import json
-import requests
-
-from .models import CarMake, CarModel
-from .populate import initiate
-from .restapis import get_request, post_review
+from django.views.decorators.csrf import csrf_exempt
+# from .populate import initiate
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +34,7 @@ def login_user(request):
     return JsonResponse(data)
 
 
+@csrf_exempt
 def logout_user(request):
     logout(request)
     return JsonResponse({"userName": ""})
@@ -36,37 +42,36 @@ def logout_user(request):
 
 @csrf_exempt
 def registration(request):
-    data = json.loads(request.body)
-    username = data["userName"]
-    password = data["password"]
-    first_name = data["firstName"]
-    last_name = data["lastName"]
-    email = data["email"]
-    username_exist = False
+    context = {}
 
+    # Load JSON data from the request body
+    data = json.loads(request.body)
+    username = data['userName']
+    password = data['password']
+    first_name = data['firstName']
+    last_name = data['lastName']
+    email = data['email']
+    username_exist = False
+    email_exist = False
     try:
+        # Check if user already exists
         User.objects.get(username=username)
         username_exist = True
-    except User.DoesNotExist:
-        logger.debug(f"{username} is a new user")
+    except:
+        # If not, simply log this is a new user
+        logger.debug("{} is new user".format(username))
 
+    # If it is a new user
     if not username_exist:
-        user = User.objects.create_user(
-            username=username,
-            first_name=first_name,
-            last_name=last_name,
-            password=password,
-            email=email
-        )
+        # Create user in auth_user table
+        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=password, email=email)
+        # Login the user and redirect to list page
         login(request, user)
-        return JsonResponse({
-            "userName": username,
-            "status": "Authenticated"
-        })
-    return JsonResponse({
-        "userName": username,
-        "error": "Already Registered"
-    })
+        data = {"userName":username,"status":"Authenticated"}
+        return JsonResponse(data)
+    else :
+        data = {"userName":username,"error":"Already Registered"}
+        return JsonResponse(data)
 
 
 def get_cars(request):
